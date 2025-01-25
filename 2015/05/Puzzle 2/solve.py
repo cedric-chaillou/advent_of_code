@@ -17,6 +17,20 @@ def get_file_content( file_path ) :
 def parse_data( str_data: str, verbose: bool = False ) :
     return str_data.strip().split( "\n" )
 
+def sub_string_repeat( string: str, sub_length: int=2, min_occurs: int=2, inverse: bool=False ) -> bool:
+    for i in range( len(string) - sub_length*min_occurs + 1 ) :
+        sub = string[i:i+sub_length]
+        if string.count( sub ) >= min_occurs :
+            return not inverse
+    return inverse
+
+def sub_string_gap( string: str, sub_length: int=1, gap_length: int=1, inverse: bool=False ) -> bool:
+    for i in range( len(string) - ( sub_length*2 + gap_length ) + 1 ) :
+        sub = string[i:i+sub_length]
+        if string[i+sub_length+gap_length:i+2*sub_length+gap_length] == sub :
+            return not inverse
+    return inverse
+
 def contains( string: str, sub_strings: tuple[str], min_occurs: int=1, inverse: bool=False ) -> bool:
     nb_hits = 0
     for sub in sub_strings :
@@ -35,9 +49,8 @@ def repeat( string: str, length_sub: int=1, nb_repeats: int=2, inverse: bool=Fal
     return inverse
 
 RULES = (
-    partial( contains, sub_strings=( 'a', 'e', 'i', 'o', 'u' ), min_occurs=3, inverse=False ),
-    partial( repeat, length_sub=1, nb_repeats=2, inverse=False ),
-    partial( contains, sub_strings=( 'ab', 'cd', 'pq', 'xy' ), min_occurs=1, inverse=True )
+    partial( sub_string_repeat, sub_length=2, min_occurs=2, inverse=False ),
+    partial( sub_string_gap, sub_length=1, gap_length=1, inverse=False ),
     )
 
 def is_nice( string: str, verbose: bool ) -> int :

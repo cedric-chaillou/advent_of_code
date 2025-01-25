@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 
 import time
-from collections import namedtuple
+from dataclasses import dataclass
 import re
 
-def get_test_file_path( i = None ) :
+def get_test_file_path( i: int = None ) -> str :
     return "tests.txt" if i is None else f"tests_{i}.txt"
 
-def get_input_file_path() :
+def get_input_file_path() -> str :
     return "input.txt"
 
-def get_file_content( file_path ) :
+def get_file_content( file_path: str ) -> str :
     with open( file_path, 'r' ) as f :
         data = f.read()
     return data
@@ -22,7 +22,7 @@ def do_problem( str_data: str, verbose = False ) :
     data = parse_data( str_data, verbose )
     print( f"END" )
 
-def do_tests( i = None ) :
+def do_tests( i: int = None ) :
     str_data = get_file_content( get_test_file_path( i ) )
     do_problem( str_data, True )
 
