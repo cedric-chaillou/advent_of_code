@@ -1,0 +1,36 @@
+Register A: 2024
+Register B: 0
+Register C: 0
+
+Program: 0,3,5,4,3,0
+
+######################
+Init :
+A = 729 = 0o1331 = 0b1011011001
+B = C = 0
+
+Program :
+
+- divise A / 2
+- output dernier octal
+- boucle => 0
+
+start A = x ?
+// 2 (enlever un bit)
+out 0 : 0b000
+// 2
+out 1 : 0b001
+
+out   0 0o0 0b000
+*2
+out   3 0o3 0b011
+*2
+out   4
+*2
+out   5
+*2
+out   1
+*2
+out   0
+*2
+start

@@ -1,0 +1,73 @@
+ap = nb d'appuis sur a
+bp = nb d'appus sur b
+
+(ax,ay) = vecteur du bouton A
+(bx,by) = vecteur du bouton B
+(px,py) = coordonnées du prix
+
+Système à résoudre :
+(1) : ax*ap + bx*bp = px
+(2) : ay*ap + by*bp = py
+
+Résolution pour bp :
+(1*ay) : ay*ax*ap + ay*bx*bp = ay*px
+(2*ax) : ax*ay*ap + ax*by*bp = ax*py
+(1*ay-2*ax) : ay*bx*bp - ax*by*bp = ay*px - ax*py
+<=> ( ay*bx - ax*by ) * bp = ay*px - ax*py
+<=> bp = ( ay*px - ax*py ) / ( ay*bx - ax*by )
+
+Résolution pour ap :
+(1*by) : by*ax*ap + by*bx*bp = by*px
+(2*bx) : bx*ay*ap + bx*by*bp = bx*py
+(2*bx)-(1*by) : bx*ay*ap - by*ax*ap = bx*py - by*px
+<=> ( bx*ay - by*ax ) * ap = bx*py - by*px
+<=> ap = ( bx*py - by*px ) / ( bx*ay - by*ax )
+
+*** Si colinéaire "à gauche" :
+<=> ax / ay = bx / by
+<=> ax*by - ay*bx = 0
+
+Si: ax / ay != px / py
+<=> ax*py != ay*px
+<=> pas de solution
+(les solutions de (1) ne sont pas solution de (2) et vice-versa)
+
+Si: ax / ay = px / py
+<=> ax*py = ay*px
+<=> equation (1) = r * equation (2)
+(les solutions de (1) sont aussi solutions de (2) et vice-versa)
+<=> résolution équation diophantienne (1)
+
+Soit c = pgcd( ax, bx )
+si c ne divise pas px (px % c != 0) => il n'y a aucune solution
+si c divise px (px % c = 0) => il y a des solutions
+1) trouver une solution ax*ap0 + bx*bp0 = px
+   => si ap0 est membre de la solution
+      => ax*ap0 + bx*bp0 = px
+      => bp0 = ( px - ax*ap0 ) / bx
+   => itérer sur ap à partir de 0 et tant que ax*ap <= px
+   => tester si px - ax*ap % bx == 0
+      => ap est solution ap0
+      => bp0 = ( px - ax*ap0 ) / bx
+      => arrêter la recherche
+   => les couples ( ap0 + bx*k, bp0 - ax*k ), k dans Z sont solutions
+   => nb de pressions toujours positifs :
+      ap0 + bx*k >= 0 et bp0 - ax*k >= 0
+      k >= -ap0 / bx et k <= bp0 / ax
+      kmin = ceil( -ap0 / bx ) inclus et kmax = ceil( bp0 / ax ) exclus
+      NB : kmin = 0 car on est partir de ap = 0 pour trouver la 1ère solution
+           => on a déjà le ap0 minimum, il ne peut qu'augmenter à partir de ce point
+   => itérer sur k entre kmin et kmax :
+      => calculer les solutions ( ap, bp ) = ( ap0 + bx*k, bp0 - ax*k )
+      => calculer le coût de chaque solution
+      => trouver le minimum
+
+
+
+(1) ax*ap + bx*bp = px
+<=> bp = ( px - ax*ap ) / bx
+(3) cost = ca*ap + cb*bp (ca = 3, cb = 1)
+<=> cost = ca*ap + cb*( ax*ap - px ) / bx
+<=> cost = ca*ap + (cb*ax/bx)*ap - cb*px/bx
+<=> cost = ( ca + cb * ax / bx ) * ap - ( cb * px / bx )
+<=> cost = ( ( ca*bx + cb*ax ) * ap - cb*px ) / bx
